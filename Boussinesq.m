@@ -116,8 +116,8 @@ classdef Boussinesq
             obj.yn = numel(obj.y);
 
 %             Temporary water depth information
-%             obj.h = obj.h0 * ones(obj.yn, obj.xn);
-            obj.h = obj.h0-obj.h0/(obj.real_x*12.7/13) * ((ones(obj.yn, obj.xn) .* obj.x ./ obj.scale) - (obj.real_x*0.3/13));
+            obj.h = obj.h0 * ones(obj.yn, obj.xn);
+%             obj.h = obj.h0-obj.h0/(obj.real_x*12.7/13) * ((ones(obj.yn, obj.xn) .* obj.x ./ obj.scale) - (obj.real_x*0.3/13));
 %             floor_profile = [[0, 0]; [0.25, 0]; [0.35, obj.h0/3]; [0.4, obj.h0/3]; [0.45, obj.h0/5]; [0.5, obj.h0/5]; [0.75, obj.h0]; [1, obj.h0]];
 %             obj.h = Profile_description(floor_profile, obj.x).y .* ones(obj.yn,obj.xn);
 
@@ -163,7 +163,7 @@ classdef Boussinesq
             obj.n(:,:,1) = initial_condition(obj.n(:,:,1),obj.A0,obj.x,obj.y);
         end
 
-        function solve(obj)
+        function obj = solve(obj)
             for i=1:obj.iterations
                 i
                 
@@ -281,9 +281,9 @@ classdef Boussinesq
                     end
                 end
             end
-%         end
-% 
-%         function displayMeshes(obj)
+        end
+
+        function obj = displayMeshes(obj)
             % Plotting Final Meshes
             % chart_titles = ["n(:,:,i)", "U(:,:,i)", "V(:,:,i)", "E(:,:,i)", "F(:,:,i)", "G(:,:,i)"];
 %             chart_titles = ["n(:,:,i)", "U(:,:,i)", "u(:).u", "E(:,:,i)", "F(:,:,i)", "u(:).v"];
@@ -291,7 +291,7 @@ classdef Boussinesq
             % display_meshes(obj.animate, obj.T, cat(3,obj.n,obj.U,obj.V,obj.E,obj.F,obj.G), obj.iterations+1, chart_titles)
             % display_meshes(obj.animate, obj.T, cat(3,obj.n,obj.U,obj.V,obj.E), obj.iterations+1, chart_titles)
 %             display_meshes(obj.animate, obj.T, cat(3, obj.n, obj.U, obj.u(:).u, obj.E, obj.F, obj.u(:).v), obj.iterations+1, chart_titles)
-
+            mesh(obj.n(:,:,end))
             display_meshes(obj.animate, obj.T, obj.n, obj.iterations+1, chart_titles);
 
 
