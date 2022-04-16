@@ -68,9 +68,6 @@ classdef Boussinesq
     
     methods
         function obj = Boussinesq(setup_args)
-            obj.animate = 1;
-            obj.T = 5;
-
             % Number of iterations
             obj.iterations = setup_args(1);
             % Tolerance and max iterations for the corrector step
@@ -284,6 +281,7 @@ classdef Boussinesq
         end
 
         function obj = displayMeshes(obj)
+
             % Plotting Final Meshes
             % chart_titles = ["n(:,:,i)", "U(:,:,i)", "V(:,:,i)", "E(:,:,i)", "F(:,:,i)", "G(:,:,i)"];
 %             chart_titles = ["n(:,:,i)", "U(:,:,i)", "u(:).u", "E(:,:,i)", "F(:,:,i)", "u(:).v"];
