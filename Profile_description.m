@@ -45,6 +45,9 @@ classdef Profile_description
                     
                 obj.y(obj.segments(i)+1:obj.segments(i+1)) = obj.y(obj.segments(i)) + grad_per_dx_for_segment .* intervals * obj.dx;
             end
+
+            % This converted the floor height above zero into water depth
+            obj.y = (obj.y - 1) * -1;
         end
     end
 end
