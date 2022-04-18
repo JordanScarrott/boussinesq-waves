@@ -275,7 +275,14 @@ classdef Boussinesq
             end
         end
 
+        % Overload function for displaySpecificMeshes
         function obj = displayMeshes(obj)
+            obj = obj.displaySpecificMeshes(1);
+        end
+
+        function obj = displaySpecificMeshes(obj, percentageOfTotalIterations)
+            iterationsToDisplay = round(percentageOfTotalIterations * obj.iterations);
+
             obj.animate = 1;
             obj.T = 5;
 
@@ -286,11 +293,11 @@ classdef Boussinesq
             % display_meshes(obj.animate, obj.T, cat(3,obj.n,obj.U,obj.V,obj.E,obj.F,obj.G), obj.iterations+1, chart_titles)
             % display_meshes(obj.animate, obj.T, cat(3,obj.n,obj.U,obj.V,obj.E), obj.iterations+1, chart_titles)
 %             display_meshes(obj.animate, obj.T, cat(3, obj.n, obj.U, obj.u(:).u, obj.E, obj.F, obj.u(:).v), obj.iterations+1, chart_titles)
-            display_meshes(obj.animate, obj.T, obj.n, obj.iterations+1, chart_titles);
+            display_meshes(obj.animate, obj.T, obj.n, iterationsToDisplay+1, chart_titles);
 
 
             % Plotting in one dimension
-            for i=1:round(obj.iterations/5):obj.iterations
+            for i=1:round(iterationsToDisplay/5):iterationsToDisplay
                 figure(10)
                 plot(obj.n(round(obj.yn/2),:,i))
                 ylim([-0.05 0.06])
@@ -300,7 +307,7 @@ classdef Boussinesq
             ylim([-0.05 0.06])
 
             figure(3)
-            contour(obj.n(:,:,end))
+            contour(obj.n(:,:,iterationsToDisplay+1))
         end
     end
 end
