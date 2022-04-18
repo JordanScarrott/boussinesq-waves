@@ -113,8 +113,7 @@ classdef Boussinesq
             obj.yn = numel(obj.y);
 
 %             Temporary water depth information
-            obj.h = FloorProfile(FloorProfile.SINGLE_BAR, obj.x, obj.h0).y_data .* ones(obj.yn, obj.xn);
-%             obj.h = obj.h0-obj.h0/(obj.real_x*12.7/13) * ((ones(obj.yn, obj.xn) .* obj.x ./ obj.scale) - (obj.real_x*0.3/13));
+            obj.h = FloorProfile(FloorProfile.FLAT, obj.x, obj.h0).y_data .* ones(obj.yn, obj.xn);
 
             % Constants
             obj.beta = -0.531;
@@ -155,7 +154,7 @@ classdef Boussinesq
             obj.v_coeff_mat = v_coeff_matrices(obj.h, obj.b1, obj.b2, obj.dy, obj.xn, obj.yn);
             
             % Initial Conditions
-            obj.n(:,:,1) = initial_condition(obj.n(:,:,1),obj.A0,obj.x,obj.y);
+            obj.n(:,:,1) = InitialCondition(InitialCondition.EXPONENTIAL, obj.n(:,:,1), obj.A0, obj.x, obj.y).n;
         end
 
         function obj = solve(obj)

@@ -7,6 +7,7 @@ classdef FloorProfile
 %         the depth of the water but what is returned is the water depth
         FLAT = [[0, 0]; [0, 0]; [0, 0]; [0, 0]];
         SINGLE_BAR = [[0, 0]; [0.25, 0]; [0.35, 1/3]; [0.4, 1/3]; [0.45, 1/5]; [0.5, 1/5]; [0.75, 1]; [1, 1]];
+    %             obj.h = obj.h0-obj.h0/(obj.real_x*12.7/13) * ((ones(obj.yn, obj.xn) .* obj.x ./ obj.scale) - (obj.real_x*0.3/13));
     end
 
     properties
