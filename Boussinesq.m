@@ -84,17 +84,15 @@ classdef Boussinesq
             obj.A0 = setup_args(3);
             % Resting height of the water surface
             obj.h0 = setup_args(4);
-            % Water depth (floor profile)
-%             obj.h = setup_args(5);
 
             % Spacial and Time steps
-            obj.dx = setup_args(6);
-            obj.dy = setup_args(7);
-            obj.dt = setup_args(8);
+            obj.dx = setup_args(5);
+            obj.dy = setup_args(6);
+            obj.dt = setup_args(7);
 
             % Real length
-            obj.real_x = setup_args(9);
-            obj.real_y = setup_args(10);
+            obj.real_x = setup_args(8);
+            obj.real_y = setup_args(9);
 
 
             % Temporary spatial scaling factor
@@ -112,8 +110,8 @@ classdef Boussinesq
             obj.xn = numel(obj.x);
             obj.yn = numel(obj.y);
 
-%             Temporary water depth information
-            obj.h = FloorProfile(FloorProfile.FLAT, obj.x, obj.h0).y_data .* ones(obj.yn, obj.xn);
+            % Water depth (floor profile)
+            obj.h = FloorProfile(setup_args(10), obj.x, obj.h0).y_data .* ones(obj.yn, obj.xn);
 
             % Constants
             obj.beta = -0.531;
