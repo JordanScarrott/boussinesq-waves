@@ -14,7 +14,8 @@ classdef FloorProfile
     end
 
     properties
-        floorProfile;
+        SELECTION = "";
+        profileDescription;
         y_data;
     end
     
@@ -22,11 +23,13 @@ classdef FloorProfile
         function obj = FloorProfile(preset, x_, h0_)
             switch(preset)
                 case obj.FLAT
-                    obj.floorProfile = Profile_description(obj.FLAT_DATA, x_);
+                    obj.profileDescription = Profile_description(obj.FLAT_DATA, x_);
+                    obj.SELECTION = "FLAT";
                 case obj.SINGLE_BAR
-                    obj.floorProfile = Profile_description(obj.SINGLE_BAR_DATA, x_);
+                    obj.profileDescription = Profile_description(obj.SINGLE_BAR_DATA, x_);
+                    obj.SELECTION = "SINGLE_BAR";
             end
-            obj.y_data = obj.floorProfile.y .* h0_;
+            obj.y_data = obj.profileDescription.y .* h0_;
         end
         
     end

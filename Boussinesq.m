@@ -33,6 +33,9 @@ classdef Boussinesq
         xn;
         yn;
 
+        floorProfile;
+        initialCondition;
+
         beta;
         za;
         a1;
@@ -111,7 +114,8 @@ classdef Boussinesq
             obj.yn = numel(obj.y);
 
             % Water depth (floor profile)
-            obj.h = FloorProfile(setup_args(10), obj.x, obj.h0).y_data .* ones(obj.yn, obj.xn);
+            obj.floorProfile = FloorProfile(setup_args(10), obj.x, obj.h0);
+            obj.h = obj.floorProfile.y_data .* ones(obj.yn, obj.xn);
 
             % Constants
             obj.beta = -0.531;
@@ -152,7 +156,8 @@ classdef Boussinesq
             obj.v_coeff_mat = v_coeff_matrices(obj.h, obj.b1, obj.b2, obj.dy, obj.xn, obj.yn);
             
             % Initial Conditions
-            obj.n(:,:,1) = InitialCondition(InitialCondition.EXPONENTIAL, obj.n(:,:,1), obj.A0, obj.x, obj.y).n;
+            obj.initialCondition = InitialCondition(InitialCondition.EXPONENTIAL, obj.n(:,:,1), obj.A0, obj.x, obj.y);
+            obj.n(:,:,1) = obj.initialCondition.n;
         end
 
         function obj = solve(obj)
@@ -308,6 +313,18 @@ classdef Boussinesq
 
             figure(3)
             contour(obj.n(:,:,iterationsToDisplay+1))
+        end
+
+        function obj = saveParamData(obj)
+            filter = {'.xlsx', 'Excel Sheet (.xlsx)';'*.*', 'All Files (*.*)'};
+            [file,path,indx] = uiputfile(filter, "Save File Name");
+            
+            dataNames = ["iterations", "tol", "A0", "h0", "dx", "dy", "dt", "real_x", "real_y", "limit", "filtering", "filter_period", "boundary_depth", "scale", "xmax", "ymax", "xn", "yn", "beta", "a1", "a2", "b1", "b2", "g", "obj.floorProfile.SELECTION", "obj.initialCondition.SELECTION"];
+            dataToSave = [obj.iterations, obj.tol, obj.A0, obj.h0, obj.dx, obj.dy, obj.dt, obj.real_x, obj.real_y, obj.limit, obj.filtering, obj.filter_period, obj.boundary_depth, obj.scale, obj.xmax, obj.ymax, obj.xn, obj.yn, obj.beta, obj.a1, obj.a2, obj.b1, obj.b2, obj.g];
+            textData = [obj.floorProfile.SELECTION, obj.initialCondition.SELECTION];
+
+            dataToSave = [dataNames; dataToSave textData];
+            writematrix(dataToSave, strcat(path, file))
         end
     end
 end
