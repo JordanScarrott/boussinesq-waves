@@ -10,7 +10,8 @@ classdef InitialCondition
     end
 
     properties
-        n
+        n;
+        SELECTION = "";
     end
 
     methods
@@ -18,12 +19,16 @@ classdef InitialCondition
             switch(selection)
                 case obj.EXPONENTIAL
                     obj.n = obj.initial_exp(n_, A0_, x_, y_);
+                    obj.SELECTION = "EXPONENTIAL";
                 case obj.GAUSSIAN
                     obj.n = obj.initial_gaussian_2d(n_, A0_);
+                    obj.SELECTION = "GAUSSIAN";
                 case obj.PLANE
                     obj.n = obj.initial_plane_wave(n_, A0_);
+                    obj.SELECTION = "PLANE";
                 case obj.SECH
                     obj.n = obj.initial_sech(n_, A0_, 0);
+                    obj.SELECTION = "SECH";
                 otherwise
                     obj.n = null;
             end
