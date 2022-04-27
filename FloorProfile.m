@@ -28,10 +28,24 @@ classdef FloorProfile
                 case obj.SINGLE_BAR
                     obj.profileDescription = Profile_description(obj.SINGLE_BAR_DATA, x_);
                     obj.SELECTION = "SINGLE_BAR";
+                otherwise
+                    error('You have provided an invalid FloorProfile preset.');
             end
             obj.y_data = obj.profileDescription.y .* h0_;
         end
-        
+    end
+
+    methods(Static)
+        function profileEnum = getProfileEnum(profileName)
+            switch(profileName)
+                case "FLAT"
+                    profileEnum = FloorProfile.FLAT;
+                case "SINGLE_BAR"
+                    profileEnum = FloorProfile.SINGLE_BAR;
+                otherwise
+                    error('You have provided an invalid FloorProfile name.');
+            end
+        end
     end
 end
 

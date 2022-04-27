@@ -96,5 +96,22 @@ classdef InitialCondition
             end
         end
     end
+
+    methods(Static)
+        function profileEnum = getProfileEnum(profileName)
+            switch(profileName)
+                case "EXPONENTIAL"
+                    profileEnum = InitialCondition.EXPONENTIAL;
+                case "GAUSSIAN"
+                    profileEnum = InitialCondition.GAUSSIAN;
+                case "PLANE"
+                    profileEnum = InitialCondition.PLANE;
+                case "SECH"
+                    profileEnum = InitialCondition.SECH;
+                otherwise
+                    error('You have provided an invalid InitialCondition name.');
+            end
+        end
+    end
 end
 
