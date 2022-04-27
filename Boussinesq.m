@@ -156,7 +156,7 @@ classdef Boussinesq
             obj.v_coeff_mat = v_coeff_matrices(obj.h, obj.b1, obj.b2, obj.dy, obj.xn, obj.yn);
             
             % Initial Conditions
-            obj.initialCondition = InitialCondition(InitialCondition.EXPONENTIAL, obj.n(:,:,1), obj.A0, obj.x, obj.y);
+            obj.initialCondition = InitialCondition(setup_args(11), obj.n(:,:,1), obj.A0, obj.x, obj.y);
             obj.n(:,:,1) = obj.initialCondition.n;
         end
 
@@ -317,7 +317,7 @@ classdef Boussinesq
 
         function obj = saveParamData(obj)
             filter = {'.xlsx', 'Excel Sheet (.xlsx)';'*.*', 'All Files (*.*)'};
-            [file,path,indx] = uiputfile(filter, "Save File Name");
+            [file,path,index] = uiputfile(filter, "Save File Name");
             
             dataNames = ["iterations", "tol", "A0", "h0", "dx", "dy", "dt", "real_x", "real_y", "limit", "filtering", "filter_period", "boundary_depth", "scale", "xmax", "ymax", "xn", "yn", "beta", "a1", "a2", "b1", "b2", "g", "obj.floorProfile.SELECTION", "obj.initialCondition.SELECTION"];
             dataToSave = [obj.iterations, obj.tol, obj.A0, obj.h0, obj.dx, obj.dy, obj.dt, obj.real_x, obj.real_y, obj.limit, obj.filtering, obj.filter_period, obj.boundary_depth, obj.scale, obj.xmax, obj.ymax, obj.xn, obj.yn, obj.beta, obj.a1, obj.a2, obj.b1, obj.b2, obj.g];
@@ -326,6 +326,25 @@ classdef Boussinesq
             dataToSave = [dataNames; dataToSave textData];
             writematrix(dataToSave, strcat(path, file))
         end
+
+    end
+
+    % Here are the static methods for the Boussinesq class
+    methods(Static)
+        function A = loadPresetFromFile(obj)
+            filter = {'.xlsx', 'Excel Sheet (.xlsx)';'*.*', 'All Files (*.*)'};
+            [file,path,index] = uigetfile(filter);
+
+            tableData = table2cell(readtable(strcat(path, file)));
+
+            numberData = str2double(tableData(1,1:9));
+            textData = string(tableData(1,end-1:end));
+
+            functionParams = [numberData, FloorProfile.getProfileEnum(textData(1,1)), InitialCondition.getProfileEnum(textData(1,2))];
+
+            A = Boussinesq(functionParams);
+        end
+
     end
 end
 
