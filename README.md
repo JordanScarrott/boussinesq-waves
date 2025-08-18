@@ -1,20 +1,73 @@
-# boussinesq-waves
-This simulation solves the Boussinesq equation for beach waves using the Potential Flow model described by Wei &amp; Kirby 1995.
+# Boussinesq Wave Simulation
 
-# Running the simulation
-`A = Boussinesq([200, 0.01, 0.045, 0.45, 0.05, 0.05, 0.05, 10, 10, FloorProfile.FLAT, InitialCondition.EXPONENTIAL]);`
-`A = A.solve();`
-`A = A.displayMeshes();`
+This repository contains a MATLAB simulation for solving the Boussinesq equations for surface water waves. The model is based on the work of Wei & Kirby (1995) on potential flow. It simulates the evolution of waves in a 2D domain with various floor profiles and initial conditions.
 
-# Other Interesting parameter sets:
-Here are a few interesting sets of parameters I've found when playing around with the program.
+## Getting Started
 
-## Water down a channel:
-I found that you can actually increase dx and dy quite drastically while keeping the time set the same as above.
-This way I was able to adjust the length of the channel to allow waves to propagate up a slope for longer.
+### Prerequisites
 
-`A = Boussinesq([2000, 0.01, 0.045, 0.45, 0.5, 0.5, 0.05, 300, 10, FloorProfile.FLAT, InitialCondition.SECH]);`
-InitialCondition.SECH sets up a plane wave initial distribution that falls and creates two oppositely directed child waves.
-I found that the SINGLE_BAR floor profile wasnt working so I adapted the FLAT one to actually be a slope.
-I can get easily get 2000 iterations in a short amount of time.
-It seems like the boundary errors are greatly reduced when dx and dy are larger than the original 0.05.
+*   MATLAB
+
+### Installation
+
+1.  Clone the repository:
+    ```bash
+    git clone https://github.com/your-username/boussinesq-waves.git
+    ```
+2.  Open MATLAB and navigate to the cloned repository's directory.
+
+## Running the Simulation
+
+To run the simulation, you need to create an instance of the `Boussinesq` class with the desired parameters, then call the `solve` and `displayMeshes` methods.
+
+```matlab
+% Example:
+setup_params = [200, 0.01, 0.045, 0.45, 0.05, 0.05, 0.05, 10, 10, FloorProfile.FLAT, InitialCondition.EXPONENTIAL];
+A = Boussinesq(setup_params);
+A = A.solve();
+A = A.displayMeshes();
+```
+
+## Parameters
+
+The `Boussinesq` class constructor takes an array of 11 parameters:
+
+1.  `iterations` (integer): Number of simulation iterations.
+2.  `tol` (float): Tolerance for the corrector step of the numerical solver.
+3.  `A0` (float): Amplitude of the driven waves.
+4.  `h0` (float): Resting height of the water surface.
+5.  `dx` (float): Spatial step in the x-direction.
+6.  `dy` (float): Spatial step in the y-direction.
+7.  `dt` (float): Time step.
+8.  `real_x` (float): Real length of the domain in the x-direction.
+9.  `real_y` (float): Real length of the domain in the y-direction.
+10. `FloorProfile` (enum): The profile of the sea floor. See [Floor Profiles](#floor-profiles) for options.
+11. `InitialCondition` (enum): The initial shape of the water surface. See [Initial Conditions](#initial-conditions) for options.
+
+## Floor Profiles
+
+You can specify the floor profile using the `FloorProfile` enumeration.
+
+*   `FloorProfile.FLAT` (0): A flat, horizontal floor.
+*   `FloorProfile.SINGLE_BAR` (1): A floor with a single submerged bar.
+
+## Initial Conditions
+
+The initial condition for the water surface can be set using the `InitialCondition` enumeration.
+
+*   `InitialCondition.EXPONENTIAL` (0): An initial wave with an exponential decay from the center.
+*   `InitialCondition.GAUSSIAN` (1): A 2D Gaussian-shaped initial wave.
+*   `InitialCondition.PLANE` (2): A plane wave propagating across the domain.
+*   `InitialCondition.SECH` (3): An initial wave described by a hyperbolic secant function, often used to model solitary waves.
+
+## Features
+
+*   **Predictor-Corrector Method:** The simulation uses a high-order Adams-Bashforth predictor and Adams-Moulton corrector scheme for time integration, providing accurate results.
+*   **Boundary Conditions:** The simulation implements reflective and wavemaker boundary conditions. See `boundary_cond.m` for details.
+*   **Filtering:** A 2D filter can be applied periodically to the solution to remove numerical noise. This is controlled by the `filtering` and `filter_period` properties in `Boussinesq.m`.
+*   **Visualization:** The `displayMeshes` method provides an animated visualization of the wave propagation.
+*   **Save/Load Parameters:** You can save the simulation parameters to an Excel file using the `saveParamData` method and load them using the static method `loadPresetFromFile`.
+
+## License
+
+This project is licensed under the terms of the LICENSE file.
