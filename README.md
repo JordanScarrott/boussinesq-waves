@@ -68,6 +68,14 @@ The initial condition for the water surface can be set using the `InitialConditi
 *   **Visualization:** The `displayMeshes` method provides an animated visualization of the wave propagation.
 *   **Save/Load Parameters:** You can save the simulation parameters to an Excel file using the `saveParamData` method and load them using the static method `loadPresetFromFile`.
 
+## Theoretical Background
+
+The numerical model in this repository is based on the paper:
+
+*   Wei, G., Kirby, J. T., Grilli, S. T., & Subramanya, R. (1995). A fully nonlinear Boussinesq model for surface waves. Part 1. Highly nonlinear unsteady waves. *Journal of Fluid Mechanics*, *294*, 71-92.
+
+The paper presents a model based on fully nonlinear Boussinesq equations. This approach provides a more accurate representation of wave dynamics, especially for highly nonlinear and unsteady waves, compared to standard Boussinesq models. The model uses a high-order predictor-corrector method for time integration, which is reflected in the use of the Adams-Bashforth and Adams-Moulton schemes in this codebase. This allows for the simulation of complex wave phenomena such as shoaling and breaking with greater fidelity.
+
 ## License
 
 This project is licensed under the terms of the LICENSE file.
